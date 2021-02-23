@@ -1,5 +1,5 @@
 language: java
 jdk:
   - openjdk11
-before_install:
-  - cd java
+install:
+script: ./build.sh
