@@ -18,7 +18,7 @@ public class Message {
     @ManyToOne
     private User receiver;
 
-    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     public Message() {

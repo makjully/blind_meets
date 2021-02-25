@@ -9,23 +9,27 @@ public class Tryst {
     @GeneratedValue
     private int id;
 
-    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @OneToOne
-    private User user1;
+    @Column
+    private boolean isFinished;
 
-    @OneToOne
-    private User user2;
+    @ManyToOne
+    private User inviter;
+
+    @ManyToOne
+    private User invitee;
 
     public Tryst() {
 
     }
 
-    public Tryst(Date date, User user1, User user2) {
+    public Tryst(Date date, User inviter, User invitee) {
         this.date = date;
-        this.user1 = user1;
-        this.user2 = user2;
+        this.inviter = inviter;
+        this.invitee = invitee;
+        isFinished = false;
     }
 
     public Date getDate() {
@@ -36,19 +40,35 @@ public class Tryst {
         this.date = date;
     }
 
-    public User getUser1() {
-        return user1;
+    public User getInviter() {
+        return inviter;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setInviter(User inviter) {
+        this.inviter = inviter;
     }
 
-    public User getUser2() {
-        return user2;
+    public User getInvitee() {
+        return invitee;
     }
 
-    public void setUser2(User user2) {
-        this.user2 = user2;
+    public void setInvitee(User invitee) {
+        this.invitee = invitee;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
     }
 }
