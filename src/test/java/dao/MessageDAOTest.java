@@ -1,33 +1,34 @@
 package dao;
 
 import model.Message;
+import model.TestConfiguration;
 import model.User;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfiguration.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class MessageDAOTest {
-    private EntityManagerFactory factory;
+    @Autowired
     private EntityManager manager;
+    @Autowired
     private MessageDAO messageDAO;
     private Date now = new Date();
 
     @Before
     public void configure() {
-        factory = Persistence.createEntityManagerFactory(
-                "TestPersistenceUnit"
-        );
-        manager = factory.createEntityManager();
-        messageDAO = new MessageDAO(manager);
-
         User user1 = new User("tom123", "123");
         User user2 = new User("kate", "321");
 
@@ -46,16 +47,6 @@ public class MessageDAOTest {
         manager.persist(message4);
         manager.persist(message5);
         manager.getTransaction().commit();
-    }
-
-    @After
-    public void cleanup() {
-        if (manager != null) {
-            manager.close();
-        }
-        if (factory != null) {
-            factory.close();
-        }
     }
 
     @Test

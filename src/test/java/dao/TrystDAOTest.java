@@ -1,33 +1,34 @@
 package dao;
 
+import model.TestConfiguration;
 import model.Tryst;
 import model.User;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfiguration.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TrystDAOTest {
-    private EntityManagerFactory factory;
+    @Autowired
     private EntityManager manager;
+    @Autowired
     private TrystDAO trystDAO;
     private Date now = new Date();
 
     @Before
     public void configure() {
-        factory = Persistence.createEntityManagerFactory(
-                "TestPersistenceUnit"
-        );
-        manager = factory.createEntityManager();
-        trystDAO = new TrystDAO(manager);
-
         User user1 = new User("tom123", "123");
         User user2 = new User("kate", "321");
         User user3 = new User("jack17", "abc654");
@@ -43,16 +44,6 @@ public class TrystDAOTest {
         manager.persist(t1);
         manager.persist(t2);
         manager.getTransaction().commit();
-    }
-
-    @After
-    public void cleanup() {
-        if (manager != null) {
-            manager.close();
-        }
-        if (factory != null) {
-            factory.close();
-        }
     }
 
     @Test
