@@ -49,10 +49,10 @@ public class InterestDAOTest {
 
     @Test
     public void findUsersByInterest() {
-        List<String> foundIT = interestDAO.findUsersByInterestEmum(InterestGeneral.IT);
+        List<String> foundIT = interestDAO.findUsersByInterest(InterestGeneral.IT);
         assertEquals(2, foundIT.size());
 
-        List<String> foundPH = interestDAO.findUsersByInterestEmum(InterestGeneral.PHOTOGRAPHY);
+        List<String> foundPH = interestDAO.findUsersByInterest(InterestGeneral.PHOTOGRAPHY);
         assertEquals("tom123", foundPH.get(0));
     }
 }

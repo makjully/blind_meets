@@ -16,13 +16,7 @@ public class InterestDAO {
         this.manager = manager;
     }
 
-    public List<String> findUsersByInterest(String interest) {
-        return manager.createQuery("select i.user.login from Interest i where i.interest like :interest", String.class)
-                .setParameter("interest", interest)
-                .getResultList();
-    }
-
-    public List<String> findUsersByInterestEmum(InterestGeneral interest) {
+    public List<String> findUsersByInterest(InterestGeneral interest) {
         return manager.createQuery("select i.user.login from Interest i where i.interest like :interest", String.class)
                 .setParameter("interest", interest)
                 .getResultList();
