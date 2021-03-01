@@ -11,7 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 @Configuration
-@ComponentScan(basePackages = "model", excludeFilters = {
+@ComponentScan(basePackages = {"dao", "model", "converters"}, excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes =
                 AppJPAConfiguration.class)})
 public class TestConfiguration {
@@ -21,7 +21,7 @@ public class TestConfiguration {
     }
 
     @Bean
-    EntityManagerFactory entityManagerFactory() {
+    public EntityManagerFactory entityManagerFactory() {
         return Persistence.createEntityManagerFactory("TestPersistenceUnit");
     }
 }

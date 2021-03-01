@@ -22,6 +22,7 @@ import static org.junit.Assert.*;
 public class UserDAOTest {
     @Autowired
     private EntityManager manager;
+
     @Autowired
     private UserDAO userDAO;
 

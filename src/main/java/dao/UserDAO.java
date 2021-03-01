@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public class UserDAO {
-    private final EntityManager manager;
+    private EntityManager manager;
 
     @Autowired
     public UserDAO(EntityManager manager) {

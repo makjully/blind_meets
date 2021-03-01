@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title th:text="${title}"></title>
+</head>
+<body>
+<h1 th:text="${title}"></h1>
+<p>Welcome, <span th:text="${user.getLogin()}"></span>!</p>
+<p>
+    <h4>About you:</h4>
+</p>
+<p>Name: <span th:text="${user.getName()}"></span></p>
+<p>City: <span th:text="${user.getCity()}"></span></p>
+<p>Age: <span th:text="${user.getAge()}"></span></p>
+<p>Gender: <span th:text="${user.getGender()}"></span></p>
+<p>Interests:</p>
+<table>
+    <tbody th:if="${not #lists.isEmpty(user.getInterests())}">
+    <th:block th:each="interest : ${user.getInterests()}">
+        <tr>
+            <td th:text="${interest.getInterest()}"></td>
+        </tr>
+        <!-- test -->
+    </th:block>
+    </tbody>
+    <tbody th:if="${#lists.isEmpty(user.getInterests())}">
+    <tr>
+        <td>No interests</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

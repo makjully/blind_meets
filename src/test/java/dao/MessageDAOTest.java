@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 public class MessageDAOTest {
     @Autowired
     private EntityManager manager;
+
     @Autowired
     private MessageDAO messageDAO;
     private Date now = new Date();

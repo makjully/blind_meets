@@ -24,7 +24,7 @@ public class User {
     @Column(length = 20)
     private String name;
 
-    @Temporal(TemporalType.DATE)
+    @Column
     private LocalDate dateOfBirth;
 
     @Column

@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 public class TrystDAOTest {
     @Autowired
     private EntityManager manager;
+
     @Autowired
     private TrystDAO trystDAO;
     private Date now = new Date();

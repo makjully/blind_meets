@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public class TrystDAO {
-    private final EntityManager manager;
+    private EntityManager manager;
 
     @Autowired
     public TrystDAO(EntityManager manager) {

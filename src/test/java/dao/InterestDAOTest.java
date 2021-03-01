@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
 public class InterestDAOTest {
     @Autowired
     private EntityManager manager;
+
     @Autowired
     private InterestDAO interestDAO;
 
@@ -48,10 +49,10 @@ public class InterestDAOTest {
 
     @Test
     public void findUsersByInterest() {
-        List<String> foundIT = interestDAO.findUsersByInterest("IT".toLowerCase());
+        List<String> foundIT = interestDAO.findUsersByInterestEmum(InterestGeneral.IT);
         assertEquals(2, foundIT.size());
 
-        List<String> foundPH = interestDAO.findUsersByInterest("PHOTOGRAPHY".toLowerCase());
+        List<String> foundPH = interestDAO.findUsersByInterestEmum(InterestGeneral.PHOTOGRAPHY);
         assertEquals("tom123", foundPH.get(0));
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class MessageDAO {
-    private final EntityManager manager;
+    private EntityManager manager;
 
     @Autowired
     public MessageDAO( EntityManager manager) {
