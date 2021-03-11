@@ -55,4 +55,14 @@ public class InterestDAOTest {
         List<String> foundPH = interestDAO.findUsersByInterest(InterestGeneral.PHOTOGRAPHY);
         assertEquals("tom123", foundPH.get(0));
     }
+
+    @Test
+    public void addInterest() {
+        User user = new User("jul", "456");
+        manager.getTransaction().begin();
+        Interest added = interestDAO.addInterest(new Interest(InterestGeneral.IT, user));
+        manager.getTransaction().commit();
+
+        manager.refresh(added);
+    }
 }

@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -36,7 +38,7 @@ public class User {
     @Convert(converter = UserGenderConverter.class)
     private Gender gender = Gender.NONE;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
     private List<Interest> interests;
 
     @OneToMany(mappedBy = "inviter")
@@ -50,6 +52,9 @@ public class User {
 
     @OneToMany(mappedBy = "receiver")
     private List<Message> receivedMessages;
+
+    @Transient
+    private String[] userInterests;
 
     public User() {
 
@@ -157,11 +162,25 @@ public class User {
         this.interests = interests;
     }
 
+    public void setInterests(String[] interests) {
+        this.interests = new ArrayList<>();
+        Arrays.asList(interests).forEach(interest -> this.interests.add(
+                new Interest(InterestGeneral.valueOf(interest.toUpperCase()), this)));
+    }
+
     public int getAge() {
         return age;
     }
 
     public void setAge(LocalDate dateOfBirth) {
         this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public String[] getUserInterests() {
+        return userInterests;
+    }
+
+    public void setUserInterests(String[] userInterests) {
+        this.userInterests = userInterests;
     }
 }

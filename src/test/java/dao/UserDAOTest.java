@@ -62,4 +62,31 @@ public class UserDAOTest {
         List<User> found = userDAO.findByAge(28);
         assertEquals(2, found.size());
     }
+
+    @Test
+    public void findUserByLoginPassword() {
+        User user = userDAO.findUserByLoginPassword("kate", "321");
+        assertNotNull(user);
+        assertEquals("kate", user.getLogin());
+
+        assertNull(userDAO.findUserByLoginPassword("noLogin", "noPassword"));
+    }
+
+    @Test
+    public void findUserByLogin() {
+        User user = userDAO.findUserByLogin("tom123");
+        assertNotNull(user);
+        assertEquals("tom123", user.getLogin());
+
+        assertNull(userDAO.findUserByLogin("noLogin"));
+    }
+
+    @Test
+    public void saveUser() {
+        manager.getTransaction().begin();
+        User saved = userDAO.saveUser(new User("jul", "456"));
+        manager.getTransaction().commit();
+
+        manager.refresh(saved);
+    }
 }

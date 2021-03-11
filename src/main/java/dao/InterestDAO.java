@@ -1,6 +1,8 @@
 package dao;
 
+import model.Interest;
 import model.InterestGeneral;
+import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,5 +22,11 @@ public class InterestDAO {
         return manager.createQuery("select i.user.login from Interest i where i.interest like :interest", String.class)
                 .setParameter("interest", interest)
                 .getResultList();
+    }
+
+    public Interest addInterest(Interest interest) {
+        manager.persist(interest);
+
+        return interest;
     }
 }

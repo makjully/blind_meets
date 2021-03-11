@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Profile</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.6.0/css/bootstrap.css">
+</head>
+<body>
+<form action="/profile" method="GET" class="form-horizontal">
+    <div class="container">
+        <div class="pb-3">
+            <p>Welcome, <span th:text="${user.getLogin()}"></span>!</p>
+            <p>Name: <span th:text="${user.getName()}"></span></p>
+            <p>City: <span th:text="${user.getCity()}"></span></p>
+            <p>Age: <span th:text="${user.getAge()}"></span></p>
+            <p>Gender: <span th:text="${user.getGender()}"></span></p>
+            <p>Interests:</p>
+            <table>
+                <tbody th:if="${not #lists.isEmpty(user.getInterests())}">
+                <th:block th:each="interest : ${user.getInterests()}">
+                    <tr>
+                        <td th:text="${interest.getInterest()}"></td>
+                    </tr>
+                </th:block>
+                </tbody>
+                <tbody th:if="${#lists.isEmpty(user.getInterests())}">
+                <tr>
+                    <td>No interests</td>
+                </tr>
+                </tbody>
+            </table>
+            <p>
+            <div class="control-group">
+                <div class="controls">
+                    <a class="btn btn-primary" th:href="@{/play}">Play game</a>
+                </div>
+            </div>
+            </p>
+        </div>
+    </div>
+</form>
+</body>
+</html>
