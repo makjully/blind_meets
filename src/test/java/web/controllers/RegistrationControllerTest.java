@@ -2,6 +2,8 @@ package web.controllers;
 
 import dao.InterestDAO;
 import dao.UserDAO;
+import dto.ConvertingService;
+import dto.UserDTO;
 import model.Gender;
 import model.Interest;
 import model.InterestGeneral;
@@ -16,11 +18,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import web.TestWebConfiguration;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-
-import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,40 +35,51 @@ public class RegistrationControllerTest {
     @MockBean
     InterestDAO interestDAO;
 
-    @MockBean
-    private EntityTransaction transaction;
-
-    @Autowired
-    private EntityManager manager;
-
     @Test
-    public void register() throws Exception {
-        User user = new User();
-        user.setLogin("test");
-        user.setPassword("123");
-        user.setName("John");
-        user.setGender(Gender.MALE);
-        user.setDateOfBirth("11/11/1995");
-        user.setCity("Amsterdam");
-        Interest interest1 = new Interest(InterestGeneral.IT, user);
-        Interest interest2 = new Interest(InterestGeneral.PHOTOGRAPHY, user);
-        Interest interest3 = new Interest(InterestGeneral.MUSIC, user);
-        user.setInterests(Arrays.asList(interest1, interest2, interest3));
+    public void registerSuccessful() throws Exception {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setLogin("test");
+        userDTO.setPassword("88888888");
+        userDTO.setName("Kate");
+        userDTO.setDateOfBirth("1995-02-21");
+        userDTO.setCity("Paris");
+        userDTO.setGender(Gender.FEMALE);
+        userDTO.setUserInterests(new String[]{"IT", "WINE", "CAT_LOVER"});
 
-        Mockito.when(manager.getTransaction()).thenReturn(transaction);
+        User user = ConvertingService.transferFromDTOtoUser(userDTO);
+
         Mockito.when(userDAO.saveUser(user)).thenReturn(user);
+        Mockito.when(interestDAO.addInterest(user.getInterests().get(0))).thenReturn(new Interest(InterestGeneral.IT, user));
+        Mockito.when(interestDAO.addInterest(user.getInterests().get(1))).thenReturn(new Interest(InterestGeneral.WINE, user));
+        Mockito.when(interestDAO.addInterest(user.getInterests().get(2))).thenReturn(new Interest(InterestGeneral.CAT_LOVER, user));
 
         mvc.perform(post("/register")
-                .flashAttr("newUser", user)
-                .param("userInterests", "IT", "PHOTOGRAPHY", "MUSIC")
+                .flashAttr("newUser", userDTO)
         )
                 .andExpect(status().is3xxRedirection());
+    }
 
-        Mockito.when(interestDAO.addInterest(user.getInterests().get(0))).thenReturn(interest1);
-        Mockito.when(interestDAO.addInterest(user.getInterests().get(1))).thenReturn(interest2);
-        Mockito.when(interestDAO.addInterest(user.getInterests().get(2))).thenReturn(interest3);
+    @Test
+    public void registerUnsuccessful() throws Exception {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setLogin("test");
+        userDTO.setPassword("777");
+        userDTO.setName("Smth333");
+        userDTO.setDateOfBirth("1995-02-21");
+        userDTO.setCity("Paris1");
+        userDTO.setGender(Gender.FEMALE);
+        userDTO.setUserInterests(new String[]{"IT", "WINE", "CAT_LOVER"});
 
-        Mockito.verify(userDAO, Mockito.atLeast(1))
-                .saveUser(user);
+        User user = ConvertingService.transferFromDTOtoUser(userDTO);
+
+        Mockito.when(userDAO.saveUser(user)).thenReturn(user);
+        Mockito.when(interestDAO.addInterest(user.getInterests().get(0))).thenReturn(new Interest(InterestGeneral.IT, user));
+        Mockito.when(interestDAO.addInterest(user.getInterests().get(1))).thenReturn(new Interest(InterestGeneral.WINE, user));
+        Mockito.when(interestDAO.addInterest(user.getInterests().get(2))).thenReturn(new Interest(InterestGeneral.CAT_LOVER, user));
+
+        mvc.perform(post("/register")
+                .flashAttr("newUser", userDTO)
+        )
+                .andExpect(status().isOk());
     }
 }

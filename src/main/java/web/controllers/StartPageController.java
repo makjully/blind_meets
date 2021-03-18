@@ -24,7 +24,7 @@ public class StartPageController {
     }
 
     private User loadUser(String login) {
-        User user = userDAO.findUserByLogin(login);
+        User user = userDAO.findByLogin(login);
         return user;
     }
 }

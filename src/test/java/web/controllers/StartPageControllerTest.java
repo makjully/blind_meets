@@ -1,5 +1,6 @@
 package web.controllers;
 
+import dao.InterestDAO;
 import dao.UserDAO;
 import model.User;
 import org.junit.Test;
@@ -14,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import web.TestWebConfiguration;
 import web.UserSession;
 
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,13 +29,16 @@ public class StartPageControllerTest {
     @MockBean
     UserDAO userDAO;
 
+    @MockBean
+    InterestDAO interestDAO;
+
     @Test
     public void openProfile() throws Exception {
         User user = new User("test", "123");
         UserSession userSession = new UserSession();
         userSession.setUserLogin("test");
 
-        Mockito.when(userDAO.findUserByLogin(user.getLogin())).thenReturn(user);
+        Mockito.when(userDAO.findByLogin(user.getLogin())).thenReturn(user);
 
         mvc.perform(get("/profile").sessionAttr("user-session", userSession))
                 .andExpect(status().isOk())

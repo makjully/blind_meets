@@ -11,9 +11,9 @@ public class Interest {
     private int id;
 
     @Convert(converter = UserInterestConverter.class)
-    private InterestGeneral interest = InterestGeneral.NONE;
+    private InterestGeneral interest;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.MERGE)
     private User user;
 
     public Interest() {}

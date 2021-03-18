@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,12 +22,14 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfiguration.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@SpringBootTest
 public class InterestDAOTest {
-    @Autowired
-    private EntityManager manager;
 
     @Autowired
     private InterestDAO interestDAO;
+
+    @Autowired
+    private UserDAO userDAO;
 
     @Before
     public void configure() {
@@ -37,14 +40,12 @@ public class InterestDAOTest {
         Interest interest3 = new Interest(InterestGeneral.TRAVELING, user2);
         Interest interest4 = new Interest(InterestGeneral.IT, user2);
 
-        manager.getTransaction().begin();
-        manager.persist(user1);
-        manager.persist(user2);
-        manager.persist(interest1);
-        manager.persist(interest2);
-        manager.persist(interest3);
-        manager.persist(interest4);
-        manager.getTransaction().commit();
+        userDAO.save(user1);
+        userDAO.save(user2);
+        interestDAO.save(interest1);
+        interestDAO.save(interest2);
+        interestDAO.save(interest3);
+        interestDAO.save(interest4);
     }
 
     @Test
@@ -54,15 +55,5 @@ public class InterestDAOTest {
 
         List<String> foundPH = interestDAO.findUsersByInterest(InterestGeneral.PHOTOGRAPHY);
         assertEquals("tom123", foundPH.get(0));
-    }
-
-    @Test
-    public void addInterest() {
-        User user = new User("jul", "456");
-        manager.getTransaction().begin();
-        Interest added = interestDAO.addInterest(new Interest(InterestGeneral.IT, user));
-        manager.getTransaction().commit();
-
-        manager.refresh(added);
     }
 }

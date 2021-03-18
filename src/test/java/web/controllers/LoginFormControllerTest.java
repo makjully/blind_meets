@@ -1,5 +1,6 @@
 package web.controllers;
 
+import dao.InterestDAO;
 import dao.UserDAO;
 import model.User;
 import org.junit.Test;
@@ -14,12 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import web.TestWebConfiguration;
 import web.UserSession;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,23 +29,19 @@ public class LoginFormControllerTest {
     UserDAO dao;
 
     @MockBean
-    private EntityTransaction transaction;
-
-    @Autowired
-    private EntityManager manager;
+    InterestDAO interestDAO;
 
     @Test
     public void correctUser() throws Exception {
         UserSession userSession = new UserSession();
         User user = new User("test", "123");
-        Mockito.when(manager.getTransaction()).thenReturn(transaction);
-        Mockito.when(dao.findUserByLoginPassword("test", "123")).thenReturn(user);
+        Mockito.when(dao.findByLoginAndPassword("test", "123"))
+                .thenReturn(user);
 
         mvc.perform(post("/login")
                 .param("login", "test")
                 .param("password", "123")
                 .sessionAttr("user-session", userSession))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(model().attribute("user", user));
+                .andExpect(status().is3xxRedirection());
     }
 }

@@ -1,64 +1,38 @@
 package dao;
 
+import model.Gender;
+import model.Interest;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.List;
 
 @Repository
-public class UserDAO {
-    private EntityManager manager;
+public interface UserDAO extends JpaRepository<User, Integer> {
 
-    @Autowired
-    public UserDAO(EntityManager manager) {
-        this.manager = manager;
-    }
+    @Query
+    public List<User> findByGender(Gender gender);
 
-    public List<User> findByName(String name) {
-        return manager.createQuery("from User where name = :name", User.class)
-                .setParameter("name", name)
-                .getResultList();
-    }
+    @Query
+    public List<User> findByCity(String city);
 
-    public List<User> findByCity(String city) {
-        return manager.createQuery("from User where city = :city", User.class)
-                .setParameter("city", city)
-                .getResultList();
-    }
+    @Query
+    public List<User> findByAge(int age);
 
-    public List<User> findByAge(int age) {
-        return manager.createQuery("from User where age = :age", User.class)
-                .setParameter("age", age)
-                .getResultList();
-    }
+    @Query
+    public User findByLoginAndPassword(String login, String password);
 
-    public User findUserByLoginPassword(String login, String password) {
-        try {
-            return manager.createQuery("from User where login =:login AND password =:password", User.class)
-                    .setParameter("login", login)
-                    .setParameter("password", password)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
+    @Query
+    public User findByLogin(String login);
 
-    public User findUserByLogin(String login) {
-        try {
-            return manager.createQuery("from User where login =:login", User.class)
-                    .setParameter("login", login)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    public User saveUser(User user) {
-        manager.persist(user);
-
-        return user;
+    @Transactional
+    public default User saveUser(User user) {
+        return save(user);
     }
 }

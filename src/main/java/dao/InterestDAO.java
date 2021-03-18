@@ -2,31 +2,22 @@ package dao;
 
 import model.Interest;
 import model.InterestGeneral;
-import model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
-public class InterestDAO {
-    private EntityManager manager;
+public interface InterestDAO extends JpaRepository<Interest, Integer> {
 
-    @Autowired
-    public InterestDAO(EntityManager manager) {
-        this.manager = manager;
-    }
+    @Query("select i.user.login from Interest i where i.interest like :interest")
+    public List<String> findUsersByInterest(@Param("interest") InterestGeneral interest);
 
-    public List<String> findUsersByInterest(InterestGeneral interest) {
-        return manager.createQuery("select i.user.login from Interest i where i.interest like :interest", String.class)
-                .setParameter("interest", interest)
-                .getResultList();
-    }
-
-    public Interest addInterest(Interest interest) {
-        manager.persist(interest);
-
-        return interest;
+    @Transactional
+    public default Interest addInterest(Interest interest) {
+        return save(interest);
     }
 }

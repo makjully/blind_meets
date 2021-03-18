@@ -38,7 +38,7 @@ public class User {
     @Convert(converter = UserGenderConverter.class)
     private Gender gender = Gender.NONE;
 
-    @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Interest> interests;
 
     @OneToMany(mappedBy = "inviter")
@@ -46,12 +46,6 @@ public class User {
 
     @OneToMany(mappedBy = "invitee")
     private List<Tryst> acceptedTrysts;
-
-    @OneToMany(mappedBy = "sender")
-    private List<Message> sentMessages;
-
-    @OneToMany(mappedBy = "receiver")
-    private List<Message> receivedMessages;
 
     @Transient
     private String[] userInterests;
@@ -118,7 +112,7 @@ public class User {
     }
 
     public void setDateOfBirth(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.dateOfBirth = LocalDate.parse(date, formatter);
     }
 
@@ -136,22 +130,6 @@ public class User {
 
     public void setAcceptedTrysts(List<Tryst> acceptedTrysts) {
         this.acceptedTrysts = acceptedTrysts;
-    }
-
-    public List<Message> getSentMessages() {
-        return sentMessages;
-    }
-
-    public void setSentMessages(List<Message> sentMessages) {
-        this.sentMessages = sentMessages;
-    }
-
-    public List<Message> getReceivedMessages() {
-        return receivedMessages;
-    }
-
-    public void setReceivedMessages(List<Message> receivedMessages) {
-        this.receivedMessages = receivedMessages;
     }
 
     public List<Interest> getInterests() {
@@ -174,13 +152,5 @@ public class User {
 
     public void setAge(LocalDate dateOfBirth) {
         this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
-    }
-
-    public String[] getUserInterests() {
-        return userInterests;
-    }
-
-    public void setUserInterests(String[] userInterests) {
-        this.userInterests = userInterests;
     }
 }

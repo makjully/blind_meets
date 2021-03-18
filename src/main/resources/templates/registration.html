@@ -11,28 +11,35 @@
 <form th:method="POST" th:action="@{/register}" th:object="${newUser}">
     <label for="login">Login</label>
     <input type="text" th:field="*{login}" id="login"/>
+    <div style="color: red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
     <br>
     <label for="password">Password</label>
     <input type="password" th:field="*{password}" id="password"/>
+    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
     <br>
     <label for="name">Name</label>
     <input type="text" th:field="*{name}" id="name"/>
+    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     <br>
     <label for="dateOfBirth">Date Of Birth</label>
-    <input type="text" th:field="*{dateOfBirth}" id="dateOfBirth"/>
+    <input type="date" class="form-control" th:field="*{dateOfBirth}" id="dateOfBirth"/>
+    <div style="color: red" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
     <br>
     <label for="city">City</label>
     <input type="text" th:field="*{city}" id="city"/>
+    <div style="color: red" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
     <p>Gender</p>
     <p><select name="gender" th:field="*{gender}">
         <option th:value="${male}" th:text="Male"></option>
         <option th:value="${female}" th:text="Female"></option>
     </select></p>
+    <div style="color: red" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
     <p>Interests</p>
-    <p><select multiple name="interests" th:field="*{userInterests}">
+    <p><select multiple name="userInterests" th:field="*{userInterests}">
         <option th:each="interest : ${interests}" th:if="interest!=${extraValue}" th:value="${interest}"
                 th:text="${interest}"></option>
     </select>
+    <div style="color: red" th:if="${#fields.hasErrors('userInterests')}" th:errors="*{userInterests}"></div>
     <p>
     <div class="control-group">
         <div class="controls">
