@@ -5,6 +5,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.persistence.EntityManager;
@@ -17,4 +18,7 @@ import javax.persistence.EntityManager;
 public class TestWebConfiguration {
     @MockBean
     public EntityManager manager;
+
+    @MockBean
+    private UserDetailsService detailsService;
 }

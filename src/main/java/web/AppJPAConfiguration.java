@@ -11,7 +11,7 @@ import javax.persistence.Persistence;
 
 @Configuration
 @ComponentScan(basePackages = {"dao", "model", "web", "dto"})
-@EnableJpaRepositories(basePackages = {"dao", "model", "web", "dto"})
+@EnableJpaRepositories(basePackages = {"dao"})
 @EnableTransactionManagement
 public class AppJPAConfiguration {
 

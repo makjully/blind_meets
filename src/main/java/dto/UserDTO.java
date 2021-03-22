@@ -12,7 +12,7 @@ public class UserDTO {
     private String login;
 
     @NotBlank(message = "Password should not be empty")
-    @Size(min = 8, max = 15, message = "Password should be between 8 and 15 characters")
+    @Size(min = 8, max = 20, message = "Password should be between 8 and 15 characters")
     private String password;
 
     @NotBlank(message = "Name should not be empty")

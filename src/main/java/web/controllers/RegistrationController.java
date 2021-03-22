@@ -8,6 +8,7 @@ import model.Gender;
 import model.InterestGeneral;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,9 @@ public class RegistrationController {
 
     @Autowired
     private InterestDAO interestDAO;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     @GetMapping("/register")
     public String newUser(Model model,
@@ -49,6 +53,8 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             return newUser(model, newUser, bindingResult);
         }
+
+        newUser.setPassword(encoder.encode(newUser.getPassword()));
 
         user = ConvertingService.transferFromDTOtoUser(newUser);
         userDAO.saveUser(user);

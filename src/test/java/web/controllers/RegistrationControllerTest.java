@@ -15,12 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import web.TestWebConfiguration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = TestWebConfiguration.class)
@@ -34,6 +36,9 @@ public class RegistrationControllerTest {
 
     @MockBean
     InterestDAO interestDAO;
+
+    @MockBean
+    private PasswordEncoder encoder;
 
     @Test
     public void registerSuccessful() throws Exception {
@@ -54,6 +59,7 @@ public class RegistrationControllerTest {
         Mockito.when(interestDAO.addInterest(user.getInterests().get(2))).thenReturn(new Interest(InterestGeneral.CAT_LOVER, user));
 
         mvc.perform(post("/register")
+                .with(csrf())
                 .flashAttr("newUser", userDTO)
         )
                 .andExpect(status().is3xxRedirection());
@@ -79,6 +85,7 @@ public class RegistrationControllerTest {
 
         mvc.perform(post("/register")
                 .flashAttr("newUser", userDTO)
+                .with(csrf())
         )
                 .andExpect(status().isOk());
     }

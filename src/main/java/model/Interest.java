@@ -13,7 +13,7 @@ public class Interest {
     @Convert(converter = UserInterestConverter.class)
     private InterestGeneral interest;
 
-    @ManyToOne (cascade = CascadeType.MERGE)
+    @ManyToOne //(cascade = CascadeType.MERGE)
     private User user;
 
     public Interest() {}

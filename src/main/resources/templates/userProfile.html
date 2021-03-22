@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.6.0/css/bootstrap.css">
 </head>
 <body>
-<form action="/profile" method="GET" class="form-horizontal">
+<form action="user/profile" method="GET" class="form-horizontal">
     <div class="container">
         <div class="pb-3">
             <p>Welcome, <span th:text="${user.getLogin()}"></span>!</p>
@@ -32,12 +32,18 @@
             <p>
             <div class="control-group">
                 <div class="controls">
-                    <a class="btn btn-primary" th:href="@{/play}">Play game</a>
+                    <a class="btn btn-primary" th:href="@{user/play}">Play game</a>
                 </div>
             </div>
             </p>
         </div>
     </div>
 </form>
+<div th:if="${isLoggedIn}">
+    <form action="/user/logout" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <input type="submit" class="btn btn-link" value="Logout">
+    </form>
+</div>
 </body>
 </html>

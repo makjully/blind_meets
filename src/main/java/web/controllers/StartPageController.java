@@ -2,13 +2,12 @@ package web.controllers;
 
 import dao.UserDAO;
 import model.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.UserSession;
 
 @Controller
-@SessionAttributes("user-session")
 public class StartPageController {
     private final UserDAO userDAO;
 
@@ -16,10 +15,11 @@ public class StartPageController {
         this.userDAO = userDAO;
     }
 
-    @GetMapping("/profile")
-    public String profile(@ModelAttribute("user-session") UserSession session,
-                          Model model){
-        model.addAttribute("user", loadUser(session.getUserLogin()));
+    @GetMapping("user/profile")
+    public String profile(Model model,
+                          Authentication authentication){
+        model.addAttribute("user", loadUser(authentication.getName()));
+        model.addAttribute("isLoggedIn", authentication != null);
         return "userProfile";
     }
 
