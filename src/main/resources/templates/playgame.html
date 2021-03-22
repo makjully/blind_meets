@@ -6,7 +6,39 @@
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.6.0/css/bootstrap.css">
 </head>
 <body>
-<p>This page in progress..</p>
+<h4>Play game</h4>
 <br>
+<form th:method="POST" th:action="@{user/play}" th:object="${search}">
+    <label for="age">Age</label>
+    <input type="text" th:field="*{age}" id="age"/>
+    <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+    <br>
+    <label for="city">City</label>
+    <input type="text" th:field="*{city}" id="city"/>
+    <div style="color: red" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+    <p>Gender</p>
+    <p><select name="gender" th:field="*{gender}">
+        <option th:value="${male}" th:text="Male"></option>
+        <option th:value="${female}" th:text="Female"></option>
+    </select></p>
+    <div style="color: red" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+    <p>Interests</p>
+    <p><select multiple name="userInterests" th:field="*{userInterests}">
+        <option th:each="interest : ${interests}" th:if="interest!=${extraValue}" th:value="${interest}"
+                th:text="${interest}"></option>
+    </select>
+    <div style="color: red" th:if="${#fields.hasErrors('userInterests')}" th:errors="*{userInterests}"></div>
+    <p>
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+    <p>
+    <div>Search result:</div>
+    <div th:each="candidate : ${candidates}"
+    th:text="${candidate}">
+    </div>
+</form>
 </body>
 </html>
