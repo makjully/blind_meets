@@ -1,5 +1,7 @@
 package web;
 
+import dao.InterestDAO;
+import dao.TrystDAO;
 import model.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,4 +23,10 @@ public class TestWebConfiguration {
 
     @MockBean
     private UserDetailsService detailsService;
+
+    @MockBean
+    TrystDAO trystDAO;
+
+    @MockBean
+    InterestDAO interestDAO;
 }

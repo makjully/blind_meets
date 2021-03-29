@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
-import java.util.Date;
+import java.time.LocalDate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfiguration.class)
@@ -29,7 +29,7 @@ public class TestEntityManager {
         Interest interest3 = new Interest(InterestGeneral.IT, user2);
         Interest interest4 = new Interest(InterestGeneral.CAT_LOVER, user2);
 
-        Tryst tryst = new Tryst(new Date(), user1, user2);
+        Tryst tryst = new Tryst(LocalDate.now(), user1, user2);
 
         manager.getTransaction().begin();
         manager.persist(user1);

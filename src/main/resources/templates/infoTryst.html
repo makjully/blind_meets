@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tryst info</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.6.0/css/bootstrap.css">
+</head>
+<body>
+<h4>Tryst info</h4>
+<br>
+<form th:action="/user/trysts/${id}" th:method="GET" class="form-horizontal" th:object="${candidate}">
+    <p>Name: <span th:text="${candidate.getName()}"></span></p>
+    <p>City: <span th:text="${candidate.getCity()}"></span></p>
+    <p>Age: <span th:text="${candidate.getAge()}"></span></p>
+    <p>Gender: <span th:text="${candidate.getGender()}"></span></p>
+    <p>Interests:</p>
+    <table>
+        <tbody th:if="${not #lists.isEmpty(candidate.getInterests())}">
+        <th:block th:each="interest : ${candidate.getInterests()}">
+            <tr>
+                <td th:text="${interest}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <br>
+    <p>Tryst date: <span th:datetime="${dateT}"></span></p>
+    <br>
+    <p>
+    <div class="control-group">
+        <div class="controls">
+            <a class="btn btn-primary" th:href="@{/user/profile}">Return</a>
+        </div>
+    </div>
+    </p>
+</form>
+</body>
+</html>

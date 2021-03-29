@@ -1,5 +1,7 @@
 package dao;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.Gender;
 import model.User;
 import org.springframework.stereotype.Component;
@@ -10,14 +12,18 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @Component
+@Getter
+@Setter
 public class SearchUsers {
     @Pattern(regexp = "\\p{Digit}+", message = "Age should contain only digits")
+    @Positive
     private int age;
 
     @Pattern(regexp = "^[a-zA-Z\\s]*$", message = "Name should contain only letters")
@@ -48,7 +54,7 @@ public class SearchUsers {
 
         if (city != null) {
             predicates.add(
-                    builder.equal(user.get("city"), city)
+                    builder.like(user.get("city"), city)
             );
         }
 
@@ -59,14 +65,13 @@ public class SearchUsers {
         }
 
         if (userInterests.length > 0) {
-            builder.or((Predicate[])Arrays.stream(userInterests).map(i -> builder.isMember(i, user.get("interests"))).toArray());
+            builder.or((Predicate[]) Arrays.stream(userInterests).map(i -> builder.isMember(i, user.get("interests"))).toArray());
 
             for (String interest : userInterests) {
                 predicates.add(
                         builder.isMember(interest, user.get("interests"))
                 );
             }
-
         }
 
         cq.select(user)
@@ -84,37 +89,5 @@ public class SearchUsers {
             found = new ArrayList<>(found.subList(0, 3));
         }
         return found;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public String[] getUserInterests() {
-        return userInterests;
-    }
-
-    public void setUserInterests(String[] userInterests) {
-        this.userInterests = userInterests;
     }
 }

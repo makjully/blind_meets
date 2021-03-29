@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.6.0/css/bootstrap.css">
 </head>
 <body>
-<form action="user/profile" method="GET" class="form-horizontal">
+<form action="/user/profile" method="GET" class="form-horizontal">
     <div class="container">
         <div class="pb-3">
             <p>Welcome, <span th:text="${user.getLogin()}"></span>!</p>
@@ -30,9 +30,29 @@
                 </tbody>
             </table>
             <p>
+            <p>Trysts:</p>
+            <table>
+                <tbody th:if="${not #lists.isEmpty(user.getInitiatedTrysts())} or ${not #lists.isEmpty(user.getAcceptedTrysts())}">
+                <th:block th:each="tryst : ${user.getInitiatedTrysts()}">
+                    <tr>
+                        <td th:text="${tryst.getDate()}"></td>
+                    </tr>
+                </th:block>
+                <th:block th:each="tryst : ${user.getAcceptedTrysts()}">
+                    <tr>
+                        <td th:text="${tryst.getDate()}"></td>
+                    </tr>
+                </th:block>
+                </tbody>
+                <tbody th:if="${#lists.isEmpty(user.getInitiatedTrysts())} and ${not #lists.isEmpty(user.getAcceptedTrysts())}">
+                <tr>
+                    <td>No dating</td>
+                </tr>
+                </tbody>
+            </table>
             <div class="control-group">
                 <div class="controls">
-                    <a class="btn btn-primary" th:href="@{user/play}">Play game</a>
+                    <a class="btn btn-primary" th:href="@{/user/play}">Play game</a>
                 </div>
             </div>
             </p>

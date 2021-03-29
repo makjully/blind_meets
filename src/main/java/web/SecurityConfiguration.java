@@ -20,6 +20,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register", "/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/*.js", "/**/css/**").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/user/**/**").hasRole("USER")
                 .anyRequest().denyAll();
 
         http.formLogin()

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Create tryst</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.6.0/css/bootstrap.css">
+</head>
+<body>
+<h4>Create tryst with:</h4>
+<br>
+<form th:action="/user/play/${id}" th:method="POST" class="form-horizontal"
+      th:object="${candidateChosen}">
+    <p>Name: <span th:text="${candidateChosen.getName()}"></span></p>
+    <p>City: <span th:text="${candidateChosen.getCity()}"></span></p>
+    <p>Age: <span th:text="${candidateChosen.getAge()}"></span></p>
+    <p>Gender: <span th:text="${candidateChosen.getGender()}"></span></p>
+    <p>Interests:</p>
+    <table>
+        <tbody th:if="${not #lists.isEmpty(candidateChosen.getInterests())}">
+        <th:block th:each="interest : ${candidateChosen.getInterests()}">
+            <tr>
+                <td th:text="${interest}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <br>
+    <label for="dateT">Choose suitable date</label>
+    <input type="date" class="form-control" th:field="${dateT}" id="dateT"/>
+    <div style="color: red" th:if="${#fields.hasErrors('dateT')}" th:errors="${dateT}"></div>
+    <br>
+    <p>
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </div>
+    </p>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+</form>
+</body>
+</html>

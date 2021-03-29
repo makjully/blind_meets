@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = TestConfiguration.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class TrystDAOTest {
     @Autowired
     private TrystDAO trystDAO;
@@ -29,7 +32,7 @@ public class TrystDAOTest {
     @Autowired
     private UserDAO userDAO;
 
-    private Date now = new Date();
+    private LocalDate now = LocalDate.now();
 
     @Before
     public void configure() {
@@ -39,7 +42,6 @@ public class TrystDAOTest {
 
         Tryst t1 = new Tryst(now, user1, user2);
         Tryst t2 = new Tryst(now, user2, user3);
-        t1.setFinished(true);
 
         userDAO.save(user1);
         userDAO.save(user2);
@@ -60,13 +62,13 @@ public class TrystDAOTest {
     }
 
     @Test
-    public void findArchive() {
-        List<Tryst> t1 = trystDAO.findAllByFinishedIsTrue("kate");
-        List<Tryst> t2 = trystDAO.findAllByFinishedIsTrue("jack17");
-        List<Tryst> t3 = trystDAO.findAllByFinishedIsTrue("tom123");
+    public void findByUser() {
+        List<Tryst> t1 = trystDAO.findAllByUser("kate");
+        List<Tryst> t2 = trystDAO.findAllByUser("jack17");
+        List<Tryst> t3 = trystDAO.findAllByUser("tom123");
 
-        assertEquals(1, t1.size());
-        assertEquals(0, t2.size());
+        assertEquals(2, t1.size());
+        assertEquals(1, t2.size());
         assertEquals(1, t3.size());
     }
 }

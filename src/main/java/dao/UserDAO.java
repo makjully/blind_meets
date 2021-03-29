@@ -2,6 +2,7 @@ package dao;
 
 import model.Gender;
 import model.Interest;
+import model.Tryst;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,6 +34,16 @@ public interface UserDAO extends JpaRepository<User, Integer> {
 
     @Transactional
     public default User saveUser(User user) {
+        return save(user);
+    }
+
+    public default User updateInviterWithTryst(User user, Tryst tryst) {
+        user.getInitiatedTrysts().add(tryst);
+        return save(user);
+    }
+
+    public default User updateInviteeWithTryst(User user, Tryst tryst) {
+        user.getAcceptedTrysts().add(tryst);
         return save(user);
     }
 }

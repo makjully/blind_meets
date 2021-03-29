@@ -22,15 +22,12 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = TestWebConfiguration.class)
 @AutoConfigureMockMvc
-public class StartPageControllerTest {
+public class ProfileControllerTest {
     @Autowired
     private MockMvc mvc;
 
     @MockBean
     UserDAO userDAO;
-
-    @MockBean
-    InterestDAO interestDAO;
 
     @Test
     public void openProfile() throws Exception {

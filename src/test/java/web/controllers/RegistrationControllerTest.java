@@ -34,7 +34,7 @@ public class RegistrationControllerTest {
     @MockBean
     UserDAO userDAO;
 
-    @MockBean
+    @Autowired
     InterestDAO interestDAO;
 
     @MockBean

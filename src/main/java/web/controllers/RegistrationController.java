@@ -7,7 +7,6 @@ import dto.UserDTO;
 import model.Gender;
 import model.InterestGeneral;
 import model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,14 +20,17 @@ import javax.validation.Valid;
 
 @Controller
 public class RegistrationController {
-    @Autowired
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
 
-    @Autowired
-    private InterestDAO interestDAO;
+    private final InterestDAO interestDAO;
 
-    @Autowired
-    private PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
+
+    public RegistrationController(UserDAO userDAO, InterestDAO interestDAO, PasswordEncoder encoder) {
+        this.userDAO = userDAO;
+        this.interestDAO = interestDAO;
+        this.encoder = encoder;
+    }
 
     @GetMapping("/register")
     public String newUser(Model model,
